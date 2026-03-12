@@ -213,8 +213,8 @@ function ChapterPage({ chapter, totalChapters, onNext, onPrev, isAnimating }) {
             </blockquote>
           )}
 
-          {/* Navigation */}
-          <nav className="nav-section">
+          {/* Progress + label only */}
+          <div className="progress-section">
             <div className="progress-bar">
               <div
                 className="progress-fill"
@@ -222,34 +222,7 @@ function ChapterPage({ chapter, totalChapters, onNext, onPrev, isAnimating }) {
               />
             </div>
             <p className="progress-label">{chapter.id} / {totalChapters} chương</p>
-
-            <div className="nav-buttons">
-              {chapter.id > 1 && (
-                <button className="btn btn-ghost" onClick={onPrev}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                    <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  Chương trước
-                </button>
-              )}
-
-              {chapter.id < totalChapters ? (
-                <button className="btn btn-primary" onClick={onNext}>
-                  Chương tiếp theo
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
-                    <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              ) : (
-                <button className="btn btn-finish" onClick={() => alert('🎉 Bạn đã hoàn thành tất cả các chương!')}>
-                  Hoàn thành
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </button>
-              )}
-            </div>
-          </nav>
+          </div>
         </div>
       </div>
     </article>
@@ -284,6 +257,41 @@ export default function App() {
           style={{ width: `${((currentIdx + 1) / CHAPTERS.length) * 100}%` }}
         />
       </div>
+
+      {/* ── Side arrow navigation ── */}
+      {currentIdx > 0 && (
+        <button
+          className="side-arrow side-arrow--left"
+          onClick={() => navigate(currentIdx - 1)}
+          aria-label="Chương trước"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="22" height="22">
+            <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
+      {currentIdx < CHAPTERS.length - 1 && (
+        <button
+          className="side-arrow side-arrow--right"
+          onClick={() => navigate(currentIdx + 1)}
+          aria-label="Chương tiếp theo"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="22" height="22">
+            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
+      {currentIdx === CHAPTERS.length - 1 && (
+        <button
+          className="side-arrow side-arrow--right finish"
+          onClick={() => alert('🎉 Bạn đã hoàn thành tất cả các chương!')}
+          aria-label="Hoàn thành"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </button>
+      )}
 
       <ChapterPage
         key={currentIdx}
