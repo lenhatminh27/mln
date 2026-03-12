@@ -1,0 +1,565 @@
+/* ╔══════════════════════════════════════════════════════╗
+   ║   BÁNH MÌ — Chapter Page  •  Global Styles          ║
+   ╚══════════════════════════════════════════════════════╝ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── Design Tokens ── */
+:root {
+  /* Palette */
+  --ivory: #FAF6EF;
+  --cream: #F5EDD8;
+  --cream-dark: #EDE0C4;
+  --butter: #F2C96B;
+  --gold: #D4A028;
+  --gold-rich: #C08018;
+  --amber: #C96A18;
+  --brown: #7A4B28;
+  --brown-dark: #4E2E14;
+  --charcoal: #2A1A0A;
+  --white: #FFFDF8;
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Spacing */
+  --page-max: 720px;
+  --pad-x: clamp(1.25rem, 5vw, 2.5rem);
+
+  /* Radius */
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+
+  /* Shadows */
+  --shadow-card: 0 8px 32px rgba(74, 40, 16, 0.16);
+  --shadow-hero: 0 16px 48px rgba(74, 40, 16, 0.24);
+  --shadow-btn: 0 4px 16px rgba(192, 128, 24, 0.35);
+  --shadow-btn-lg: 0 8px 28px rgba(192, 128, 24, 0.45);
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Base ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--ivory);
+  color: var(--charcoal);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Top Progress Strip ── */
+.top-strip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--cream-dark);
+  z-index: 100;
+}
+
+.top-strip-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--amber));
+  transition: width 0.6s var(--ease-out);
+  border-radius: 0 99px 99px 0;
+}
+
+/* ── App Root ── */
+.app-root {
+  min-height: 100vh;
+  background: var(--ivory);
+  padding-bottom: 80px;
+  /* space for dot nav */
+}
+
+/* ════════════════════════════════════════════
+   CHAPTER PAGE
+════════════════════════════════════════════ */
+.chapter-page {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.32s var(--ease-out), transform 0.32s var(--ease-out);
+}
+
+.chapter-page.animate-in {
+  animation: fadeSlideIn 0.5s var(--ease-out) both;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ════════════════════════════════════════════
+   HERO MEDIA
+════════════════════════════════════════════ */
+.chapter-hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 520px;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .chapter-hero {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Media wrapper — image or video */
+.media-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.media-asset {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 8s ease;
+}
+
+.chapter-hero:hover .media-asset {
+  transform: scale(1.04);
+}
+
+/* Gradient overlay on image */
+.media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+      transparent 40%,
+      rgba(42, 26, 10, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* Play button */
+.play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--amber);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s var(--ease-out), background 0.2s, box-shadow 0.2s;
+}
+
+.play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: var(--white);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.play-btn.playing {
+  background: rgba(255, 253, 248, 0.75);
+}
+
+/* Hero badge (chapter label pill) */
+.hero-badge {
+  position: absolute;
+  bottom: 20px;
+  left: var(--pad-x);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(42, 26, 10, 0.72);
+  backdrop-filter: blur(10px);
+  color: var(--butter);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid rgba(242, 201, 107, 0.3);
+}
+
+.bread-icon {
+  font-size: 1rem;
+}
+
+/* ════════════════════════════════════════════
+   CHAPTER BODY
+════════════════════════════════════════════ */
+.chapter-body {
+  background: var(--white);
+  padding: clamp(2rem, 6vw, 4rem) var(--pad-x);
+}
+
+.chapter-inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
+
+/* ── Eyebrow ── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Chapter Title ── */
+.chapter-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  color: var(--brown-dark);
+  line-height: 1.25;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Divider ── */
+.title-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+  color: var(--butter);
+}
+
+.title-divider::before,
+.title-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cream-dark));
+}
+
+.title-divider::before {
+  background: linear-gradient(90deg, transparent, var(--cream-dark));
+}
+
+.title-divider::after {
+  background: linear-gradient(90deg, var(--cream-dark), transparent);
+}
+
+.divider-icon {
+  font-size: 0.9rem;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+/* ── Paragraphs ── */
+.paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-bottom: 2rem;
+}
+
+.body-text {
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+  color: var(--charcoal);
+  line-height: 1.8;
+  opacity: 0.88;
+}
+
+/* ── Bullet List ── */
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, var(--ivory), var(--cream));
+  border-left: 3px solid var(--butter);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.bullet-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.bullet-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--brown-dark);
+  line-height: 1.6;
+}
+
+/* ── Quote ── */
+.chapter-quote {
+  position: relative;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--brown);
+  background: linear-gradient(135deg, var(--cream), var(--cream-dark));
+  border-radius: var(--r-lg);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.quote-mark {
+  font-size: 1.5em;
+  color: var(--gold);
+  font-style: normal;
+  line-height: 1;
+  vertical-align: -0.15em;
+}
+
+/* ════════════════════════════════════════════
+   NAVIGATION SECTION
+════════════════════════════════════════════ */
+.nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--cream-dark);
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 4px;
+  background: var(--cream-dark);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--amber));
+  border-radius: 99px;
+  transition: width 0.6s var(--ease-out);
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gold-rich);
+  letter-spacing: 0.05em;
+}
+
+/* Nav buttons row */
+.nav-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--r-xl);
+  transition: transform 0.18s var(--ease-out), box-shadow 0.18s, background 0.18s;
+  white-space: nowrap;
+  min-height: 52px;
+  /* mobile-friendly tap target */
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Primary — main CTA */
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  color: var(--white);
+  box-shadow: var(--shadow-btn);
+  flex: 1;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--amber), var(--gold-rich));
+  box-shadow: var(--shadow-btn-lg);
+  transform: translateY(-2px);
+}
+
+.btn-primary:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Ghost — prev button */
+.btn-ghost {
+  background: transparent;
+  color: var(--brown);
+  border: 1.5px solid var(--cream-dark);
+}
+
+.btn-ghost:hover {
+  background: var(--cream);
+  border-color: var(--butter);
+  color: var(--brown-dark);
+}
+
+.btn-ghost:focus-visible {
+  outline: 3px solid var(--butter);
+  outline-offset: 2px;
+}
+
+/* Finish */
+.btn-finish {
+  background: linear-gradient(135deg, var(--brown), var(--brown-dark));
+  color: var(--butter);
+  box-shadow: 0 4px 16px rgba(74, 40, 16, 0.35);
+  flex: 1;
+}
+
+.btn-finish:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(74, 40, 16, 0.45);
+}
+
+/* ════════════════════════════════════════════
+   DOT NAV (fixed bottom)
+════════════════════════════════════════════ */
+.dot-nav {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 253, 248, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 99px;
+  padding: 10px 16px;
+  box-shadow: 0 4px 20px rgba(42, 26, 10, 0.15);
+  border: 1px solid var(--cream-dark);
+  z-index: 90;
+}
+
+.dot-btn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--cream-dark);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s var(--ease-out);
+  outline: none;
+}
+
+.dot-btn.active {
+  width: 24px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--gold), var(--amber));
+  box-shadow: 0 2px 8px rgba(192, 128, 24, 0.45);
+}
+
+.dot-btn:hover:not(.active) {
+  background: var(--butter);
+  transform: scale(1.25);
+}
+
+.dot-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — Mobile-first refinements
+════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .nav-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .chapter-quote {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .bullet-list {
+    padding: 1rem 1.125rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .chapter-body {
+    padding: 3.5rem var(--pad-x) 4rem;
+  }
+}
+
+/* ════════════════════════════════════════════
+   LOAD ANIMATION (first paint)
+════════════════════════════════════════════ */
+@keyframes gentle-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.app-root {
+  animation: gentle-fade 0.4s ease both;
+}
